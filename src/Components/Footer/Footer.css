@@ -1,0 +1,108 @@
+* {
+    box-sizing: border-box;
+}
+
+.Ffooter {
+    background: radial-gradient(circle at 50% 100%, #1A1035 0%, #0A0E1A 70%);
+    padding: 60px 100px 40px;
+}
+
+.Ftop {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+/* Brand column */
+.Fbrand {
+    display: flex;
+    flex-direction: column;
+    max-width: 320px;
+}
+
+.Flogo-box {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 20px;
+}
+
+.Flogo-box svg {
+    width: 24px;
+    height: 24px;
+    color: #fff;
+}
+
+.Fcontact {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #d1d5db;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.Fcontact svg {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    color: #d1d5db;
+}
+
+.Fcontact p {
+    margin: 0;
+    line-height: 1.4;
+}
+
+.Fsocials {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.Fsocials a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid #4b5563;
+    border-radius: 50%;
+    color: #d1d5db;
+    text-decoration: none;
+    font-size: 13px;
+    transition: background 0.2s ease;
+}
+
+.Fsocials a:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Link columns */
+.Fcol h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    margin: 0 0 16px;
+}
+
+.Fcol ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.Fcol li {
+    margin-bottom: 12px;
+}
+
+.Fcol a {
+    color: #9ca3af;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.Fcol a:hover {
+    color: #fff;
+}
+

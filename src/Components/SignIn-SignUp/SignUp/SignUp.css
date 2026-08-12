@@ -1,0 +1,171 @@
+* {
+    box-sizing: border-box;
+}
+
+.UBody {
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.signup-card {
+    width: 380px;
+    padding: 32px;
+    border-radius: 16px;
+    background: rgba(129, 140, 248, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 40px rgba(99, 102, 241, 0.15);
+    margin: 40px auto;
+    margin-top: 100px;
+}
+
+.signup-card h2 {
+    color: #F9FAFB;
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.signup-card .sub {
+  color: #6B7280;
+  font-size: 13px;
+  margin-bottom: 24px;
+}
+
+.signup-card input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 12px 16px;
+    color: #E5E7EB;
+    font-size: 14px;
+    margin-bottom: 16px;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.signup-card input:focus {
+    border-color: #818CF8;
+    box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.15);
+}
+
+.signup-card button {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid rgba(129, 140, 248, 0.4);
+    border-radius: 7px;
+    background: rgba(129, 140, 248, 0.08);
+    color: #E5E7EB;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.signup-card button:hover {
+    transition: 200ms linear;
+    background-color: #818CF8;
+    color: black;
+}
+
+.signup-card button:active {
+    transition: 70ms linear;
+    transform: translateY(1.5px);
+}
+
+.dob-label {
+    display: block;
+    color: #9CA3AF;
+    font-size: 12px;
+    margin-bottom: 6px;
+}
+
+.terms-check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #9CA3AF;
+    font-size: 12px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.terms-check input {
+    width: auto;
+    margin: 0;
+}
+
+.oauth-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.Uoauth-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px 46px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    color: #E5E7EB;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.Uoauth-btn:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.Uoauth-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Divider */
+.Udivider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    text-align: center;
+    color: #6B7280;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    width: 380px;
+    margin: 4px 0 20px;
+}
+
+.Udivider .Uline {
+    flex: 1;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.Ualready {
+    color: #6B7280;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    margin: 20px 0;
+}
+
+.Ualready a {
+    color: #818CF8;
+    cursor: pointer;
+    margin-left: 3px;
+}
+
+.Ualready a:active {
+    color: #565fa7;
+    transform: translateY(0.5px);
+}
