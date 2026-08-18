@@ -1,6 +1,4 @@
-* {
-    box-sizing: border-box;
-}
+
 
 .IBody {
     background: transparent;
@@ -10,7 +8,8 @@
 }
 
 .signin-card {
-    width: 380px;
+    max-width: 380px;
+    width: 100%;
     padding: 32px;
     border-radius: 20px;
     background: rgba(129, 140, 248, 0.04);
@@ -102,7 +101,7 @@
     gap: 12px;
 }
 
-.Ioauth-btn {
+.Uoauth-btn {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -118,12 +117,12 @@
     transition: background 0.2s, border-color 0.2s;
 }
 
-.Ioauth-btn:hover {
+.Uoauth-btn:hover {
     background: rgba(255, 255, 255, 0.06);
     border-color: rgba(255, 255, 255, 0.15);
 }
 
-.Ioauth-btn svg {
+.Uoauth-btn svg {
     width: 18px;
     height: 18px;
 }
@@ -150,4 +149,25 @@
 .Idivider a:active {
     color: #1c7065;
     transform: translateY(0.5px);
+}
+
+.Udivider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    text-align: center;
+    color: #6B7280;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    max-width: 380px;
+    width: 100%;
+    margin: 4px 0 20px;
+}
+
+.Udivider .Uline {
+    flex: 1;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.12);
 }

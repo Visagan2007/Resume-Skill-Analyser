@@ -1,0 +1,113 @@
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 0 clamp(20px, 5%, 100px);
+    background: rgba(10, 14, 26, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+}
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.logo-mark {
+    font-size: 18px;
+    font-weight: 700;
+    color: #5EEAD4;
+    letter-spacing: 0.05em;
+}
+
+.logo-text {
+    font-size: 15px;
+    font-weight: 500;
+    color: #E5E7EB;
+    letter-spacing: 0.01em;
+}
+
+.nav-links {
+    display: flex;
+    gap: 32px;
+}
+
+.nav-links a {
+    color: #9CA3AF;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.nav-links a:hover {
+    color: #E5E7EB;
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nav-signin {
+    color: #9CA3AF;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: color 0.2s;
+}
+
+.nav-signin:hover {
+    color: #E5E7EB;
+}
+
+.nav-signup {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(94, 234, 212, 0.1);
+    border: 1px solid rgba(94, 234, 212, 0.3);
+    color: #5EEAD4;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 20px;
+    border-radius: 8px;
+    transition: background 0.2s, color 0.2s;
+}
+
+.nav-signup:hover {
+    background: #5EEAD4;
+    color: #0A0E1A;
+}
+
+.nav-signup:active {
+    transform: translateY(1px);
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 640px) {
+    .nav-links {
+        display: none;
+    }
+
+    .logo-text {
+        display: none;
+    }
+}

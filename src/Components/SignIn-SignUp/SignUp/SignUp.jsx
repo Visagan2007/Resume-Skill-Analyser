@@ -1,5 +1,6 @@
 import './SignUp.css';
 import { FaDiscord, FaGithub, FaGoogle, FaMicrosoft } from "react-icons/fa";
+import { Link } from 'react-router-dom';
 
 function SignUp() {
     return (
@@ -11,8 +12,8 @@ function SignUp() {
                     <input type="text" placeholder="Username" />
                     <input type="email" placeholder="Email" />
                     <input type="password" placeholder="Password" />
-                    <label className="dob-label">Date of Birth</label>
-                    <input type="date" placeholder="Date of Birth" />
+                    <label className="dob-label" htmlFor="dob">Date of Birth</label>
+                    <input type="date" id="dob" />
                     <label className="terms-check">
                         <input type="checkbox" />
                         <span>I agree to the Terms and Conditions</span>
@@ -29,7 +30,7 @@ function SignUp() {
                     <button className="Uoauth-btn"><FaDiscord /> Discord</button>
                 </div>
 
-                <div className="Ualready">Already Have a Account ? <a href='/SignIn'>SignIn</a></div>
+                <div className="Ualready">Already have an account? <Link to='/SignIn'>SignIn</Link></div>
             </div>
         </>
     )

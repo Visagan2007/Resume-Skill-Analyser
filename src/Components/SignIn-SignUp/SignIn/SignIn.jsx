@@ -1,5 +1,6 @@
 import './SignIn.css';
 import { FaDiscord, FaGithub, FaGoogle, FaMicrosoft } from "react-icons/fa";
+import { Link } from 'react-router-dom';
 
 function SignIn() {
     return (
@@ -25,7 +26,7 @@ function SignIn() {
                     <button className="Uoauth-btn"><FaDiscord /> Discord</button>
                 </div>
 
-                <div className="Idivider">New here? <a href='/SignUp'>SignUp</a></div>
+                <div className="Idivider">New here? <Link to='/SignUp'>SignUp</Link></div>
             </div>
         </>
     )
