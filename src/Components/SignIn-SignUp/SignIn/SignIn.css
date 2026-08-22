@@ -46,6 +46,10 @@
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
+.signin-card input::placeholder {
+    color: #4B5563;
+}
+
 .signin-card input:focus {
     border-color: #5EEAD4;
     box-shadow: 0 0 0 3px rgba(94, 234, 212, 0.15);
@@ -95,38 +99,6 @@
     transform: translateY(1.5px);
 }
 
-.oauth-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-}
-
-.Uoauth-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 12px 46px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 10px;
-    color: #E5E7EB;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.2s, border-color 0.2s;
-}
-
-.Uoauth-btn:hover {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(255, 255, 255, 0.15);
-}
-
-.Uoauth-btn svg {
-    width: 18px;
-    height: 18px;
-}
-
 .Idivider {
     display: flex;
     align-items: center;
@@ -149,25 +121,4 @@
 .Idivider a:active {
     color: #1c7065;
     transform: translateY(0.5px);
-}
-
-.Udivider {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    text-align: center;
-    color: #6B7280;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    max-width: 380px;
-    width: 100%;
-    margin: 4px 0 20px;
-}
-
-.Udivider .Uline {
-    flex: 1;
-    height: 1px;
-    background: rgba(255, 255, 255, 0.12);
 }

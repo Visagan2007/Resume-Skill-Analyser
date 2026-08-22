@@ -41,23 +41,63 @@
     letter-spacing: 0.01em;
 }
 
-.nav-links {
-    display: flex;
-    gap: 32px;
+/* ─── Hamburger ─── */
+.hamburger {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    color: #E5E7EB;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 8px;
+    z-index: 110;
 }
 
-.nav-links a {
+/* ─── Nav Menu (desktop: row layout) ─── */
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+}
+
+/* ─── Nav Links ─── */
+.nav-links {
+    display: flex;
+    gap: 28px;
+}
+
+.nav-link {
     color: #9CA3AF;
     text-decoration: none;
     font-size: 14px;
     font-weight: 500;
+    padding: 6px 0;
+    position: relative;
     transition: color 0.2s;
 }
 
-.nav-links a:hover {
+.nav-link:hover {
     color: #E5E7EB;
 }
 
+.nav-link.active {
+    color: #5EEAD4;
+}
+
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #5EEAD4;
+    border-radius: 1px;
+}
+
+/* ─── Nav Actions ─── */
 .nav-actions {
     display: flex;
     align-items: center;
@@ -102,12 +142,65 @@
 }
 
 /* ─── Responsive ─── */
-@media (max-width: 640px) {
-    .nav-links {
-        display: none;
+@media (max-width: 768px) {
+    .hamburger {
+        display: flex;
     }
 
     .logo-text {
         display: none;
+    }
+
+    .nav-menu {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 280px;
+        height: 100vh;
+        background: rgba(10, 14, 26, 0.97);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-left: 1px solid rgba(255, 255, 255, 0.06);
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 80px 32px 32px;
+        gap: 32px;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+        z-index: 100;
+    }
+
+    .nav-menu.open {
+        transform: translateX(0);
+    }
+
+    .nav-links {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .nav-link {
+        font-size: 16px;
+    }
+
+    .nav-link.active::after {
+        display: none;
+    }
+
+    .nav-actions {
+        flex-direction: column;
+        width: 100%;
+        gap: 12px;
+    }
+
+    .nav-signin {
+        text-align: center;
+        width: 100%;
+    }
+
+    .nav-signup {
+        text-align: center;
+        width: 100%;
+        justify-content: center;
     }
 }

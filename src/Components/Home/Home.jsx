@@ -1,36 +1,86 @@
 import './Home.css';
 import { Link } from 'react-router-dom';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FaFileAlt, FaChartBar, FaLightbulb, FaRocket, FaCloudUploadAlt, FaCogs, FaCheckCircle } from 'react-icons/fa';
+
+const sections = [
+    { id: 'hero', label: 'Home' },
+    { id: 'features', label: 'Features' },
+    { id: 'how-it-works', label: 'How It Works' },
+    { id: 'cta', label: 'Get Started' },
+];
 
 function Home() {
     const containerRef = useRef(null);
+    const [activeSection, setActiveSection] = useState('hero');
 
     useEffect(() => {
-        const observer = new IntersectionObserver(
+        // Scroll-reveal observer
+        const revealObserver = new IntersectionObserver(
             (entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('revealed');
-                        observer.unobserve(entry.target);
+                        revealObserver.unobserve(entry.target);
                     }
                 });
             },
             { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
         );
 
-        const elements = containerRef.current.querySelectorAll('.reveal');
-        elements.forEach(el => observer.observe(el));
+        const revealElements = containerRef.current.querySelectorAll('.reveal');
+        revealElements.forEach(el => revealObserver.observe(el));
 
-        return () => observer.disconnect();
+        // Active-section observer for dot navigation
+        const sectionObserver = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        setActiveSection(entry.target.id);
+                    }
+                });
+            },
+            { threshold: 0.3, rootMargin: '-80px 0px -40% 0px' }
+        );
+
+        sections.forEach(({ id }) => {
+            const el = containerRef.current?.querySelector(`#${id}`) || document.getElementById(id);
+            if (el) sectionObserver.observe(el);
+        });
+
+        return () => {
+            revealObserver.disconnect();
+            sectionObserver.disconnect();
+        };
     }, []);
+
+    const scrollTo = (id) => {
+        const el = containerRef.current?.querySelector(`#${id}`);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+    };
 
     return (
         <>
+            {/* ── Dot Navigation ── */}
+            <nav className="dot-nav">
+                <div className="dot-track"></div>
+                {sections.map(({ id, label }) => (
+                    <button
+                        key={id}
+                        className={`dot-item ${activeSection === id ? 'active' : ''}`}
+                        onClick={() => scrollTo(id)}
+                        title={label}
+                    >
+                        <span className="dot-point"></span>
+                        <span className="dot-label">{label}</span>
+                    </button>
+                ))}
+            </nav>
+
             <div className="home-container" ref={containerRef}>
 
                 {/* ── Hero ── */}
-                <section className="hero">
+                <section className="hero" id="hero">
                     <div className="hero-content">
                         <h1>
                             Discover the Skills
@@ -44,7 +94,7 @@ function Home() {
                         </p>
                         <div className="hero-actions">
                             <Link to="/SignUp" className="hero-cta-primary">Analyze Your Resume</Link>
-                            <a href="#features" className="hero-cta-secondary">Learn More</a>
+                            <button type="button" onClick={() => scrollTo('features')} className="hero-cta-secondary">Learn More</button>
                         </div>
                     </div>
 
@@ -141,7 +191,7 @@ function Home() {
                 </section>
 
                 {/* ── CTA ── */}
-                <section className="cta-section">
+                <section className="cta-section" id="cta">
                     <div className="cta-card reveal">
                         <h2>Ready to Unlock Your Potential?</h2>
                         <p>Join thousands of professionals who have improved their resumes and landed better opportunities.</p>
