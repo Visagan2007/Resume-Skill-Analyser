@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 import './App.css'
 import Footer from './Components/Footer/Footer';
 import Home from './Components/Home/Home';
@@ -11,8 +12,13 @@ import NotFound from './Components/NotFound/NotFound';
 
 function AppLayout() {
     const location = useLocation();
-    const authPaths = ['/SignIn', '/SignUp'];
-    const isAuthPage = authPaths.includes(location.pathname);
+    
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [location.pathname]);
+
+    const authPaths = ['/signin', '/signup'];
+    const isAuthPage = authPaths.includes(location.pathname.toLowerCase());
 
     return (
         <div className="min-h-screen w-full ABody">

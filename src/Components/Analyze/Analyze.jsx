@@ -107,8 +107,6 @@ const focusOptions = [
     { id: 'technical', label: 'Technical Skills', desc: 'Programming languages, frameworks, tools' },
     { id: 'soft', label: 'Soft Skills', desc: 'Communication, leadership, teamwork' },
     { id: 'ats', label: 'ATS Compatibility', desc: 'Applicant Tracking System optimization' },
-    { id: 'keywords', label: 'Keyword Optimization', desc: 'Industry-specific keywords and phrases' },
-    { id: 'format', label: 'Format & Structure', desc: 'Layout, readability, organization' },
     { id: 'industry', label: 'Industry Relevance', desc: 'Alignment with your target industry' },
 ];
 
@@ -119,14 +117,18 @@ function SearchableSelect({ options, value, onChange, name, placeholder }) {
     const searchTermRef = useRef(searchTerm);
     const onChangeRef = useRef(onChange);
     const nameRef = useRef(name);
-
-    searchTermRef.current = searchTerm;
-    onChangeRef.current = onChange;
-    nameRef.current = name;
+    const [prevValue, setPrevValue] = useState(value);
 
     useEffect(() => {
+        searchTermRef.current = searchTerm;
+        onChangeRef.current = onChange;
+        nameRef.current = name;
+    });
+
+    if (value !== prevValue) {
+        setPrevValue(value);
         setSearchTerm(value || '');
-    }, [value]);
+    }
 
     useEffect(() => {
         function handleClickOutside(event) {
@@ -147,7 +149,11 @@ function SearchableSelect({ options, value, onChange, name, placeholder }) {
             }
         }
         document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
+        document.addEventListener("focusin", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+            document.removeEventListener("focusin", handleClickOutside);
+        };
     }, [value, options]);
 
     const filteredOptions = options.filter(opt =>
@@ -171,17 +177,18 @@ function SearchableSelect({ options, value, onChange, name, placeholder }) {
                     setIsOpen(true);
                 }}
                 onFocus={() => setIsOpen(true)}
+                onClick={() => setIsOpen(true)}
                 placeholder={placeholder}
             />
             <span className="searchable-arrow">▼</span>
             {isOpen && (
-                <ul className="searchable-list">
+                <ul className="searchable-list" onMouseDown={(e) => e.preventDefault()}>
                     {filteredOptions.length > 0 ? (
                         filteredOptions.map(opt => (
                             <li
                                 key={opt}
                                 className={`searchable-item ${opt === value ? 'selected' : ''}`}
-                                onMouseDown={() => handleSelect(opt)}
+                                onClick={() => handleSelect(opt)}
                             >
                                 {opt}
                             </li>
@@ -208,7 +215,11 @@ function MultiSelectDropdown({ options, selected, setSelected, placeholder }) {
             }
         }
         document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
+        document.addEventListener("focusin", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+            document.removeEventListener("focusin", handleClickOutside);
+        };
     }, []);
 
     const filteredOptions = options.filter(opt =>
@@ -234,18 +245,19 @@ function MultiSelectDropdown({ options, selected, setSelected, placeholder }) {
                     setIsOpen(true);
                 }}
                 onFocus={() => setIsOpen(true)}
+                onClick={() => setIsOpen(true)}
                 placeholder={placeholder}
             />
             <span className="searchable-arrow">▼</span>
             
             {isOpen && (
-                <ul className="searchable-list">
+                <ul className="searchable-list" onMouseDown={(e) => e.preventDefault()}>
                     {filteredOptions.length > 0 ? (
                         filteredOptions.map(opt => (
                             <li 
                                 key={opt} 
                                 className="searchable-item" 
-                                onMouseDown={() => handleSelect(opt)}
+                                onClick={() => handleSelect(opt)}
                             >
                                 {opt}
                             </li>
@@ -290,6 +302,10 @@ function Analyze() {
         focusAreas: ['technical', 'soft', 'ats'],
     });
 
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, [step]);
+
     const handleChange = (e) => {
         setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
     };
@@ -321,6 +337,7 @@ function Analyze() {
     };
 
     const handleSubmit = () => {
+        if (!canProceed()) return;
         console.log('Profile submitted for analysis:', formData);
         alert('Your structured profile details have been submitted for analysis!');
     };

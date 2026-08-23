@@ -104,3 +104,16 @@
     color: #fff;
 }
 
+.Fbottom {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+}
+
+.Fbottom p {
+    color: #9ca3af;
+    font-size: 14px;
+    margin: 0;
+}
+

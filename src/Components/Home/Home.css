@@ -77,6 +77,7 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 10px;
     text-decoration: none;
+    cursor: pointer;
     transition: color 0.2s, border-color 0.2s;
 }
 
@@ -405,18 +406,7 @@
     }
 }
 
-/* ─── Scroll Reveal ─── */
-.reveal {
-    opacity: 0;
-    transform: translateY(32px);
-    transition: opacity 0.65s ease-out, transform 0.65s ease-out;
-    transition-delay: var(--delay, 0s);
-}
 
-.reveal.revealed {
-    opacity: 1;
-    transform: translateY(0);
-}
 
 /* ─── Dot Navigation ─── */
 .dot-nav {

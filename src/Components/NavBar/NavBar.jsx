@@ -25,6 +25,8 @@ function NavBar() {
                     {menuOpen ? <FaTimes /> : <FaBars />}
                 </button>
 
+                {menuOpen && <div className="nav-overlay" onClick={closeMenu}></div>}
+
                 <div className={`nav-menu ${menuOpen ? 'open' : ''}`}>
                     <div className="nav-links">
                         <NavLink to="/" end className={({isActive}) => `nav-link ${isActive ? 'active' : ''}`} onClick={closeMenu}>Home</NavLink>

@@ -447,9 +447,17 @@
     box-shadow: 0 8px 32px rgba(94, 234, 212, 0.3);
 }
 
-.analyze-btn.submit:active {
+.analyze-btn.submit:active:not(:disabled) {
     transform: translateY(0);
 }
+
+.analyze-btn.submit:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background: rgba(94, 234, 212, 0.5);
+    color: rgba(10, 14, 26, 0.7);
+}
+
 
 /* ─── Responsive ─── */
 @media (max-width: 640px) {

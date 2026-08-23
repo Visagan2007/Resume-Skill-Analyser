@@ -44,7 +44,7 @@ function Footer() {
                 <div className='Fcol'>
                     <h4>Company</h4>
                     <ul>
-                        <li><Link to="/#features">Features</Link></li>
+                        <li><Link to="/">Features</Link></li>
                         <li><Link to="/AboutUs">Why RSA</Link></li>
                     </ul>
                 </div>
@@ -53,10 +53,14 @@ function Footer() {
                     <h4>Support</h4>
                     <ul>
                         <li><Link to="/AboutUs">Contact Us</Link></li>
-                        <li><a href="#privacy" aria-label="Privacy Policy">Privacy Policy</a></li>
-                        <li><a href="#terms" aria-label="Terms of Service">Terms of Service</a></li>
+                        <li><a href="#" onClick={(e) => e.preventDefault()} aria-label="Privacy Policy">Privacy Policy</a></li>
+                        <li><a href="#" onClick={(e) => e.preventDefault()} aria-label="Terms of Service">Terms of Service</a></li>
                     </ul>
                 </div>
+            </div>
+
+            <div className='Fbottom'>
+                <p>&copy; {new Date().getFullYear()} Resume Skill Analyser. All rights reserved.</p>
             </div>
         </footer>
     )

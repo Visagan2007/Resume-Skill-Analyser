@@ -28,8 +28,10 @@ function Home() {
             { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
         );
 
-        const revealElements = containerRef.current.querySelectorAll('.reveal');
-        revealElements.forEach(el => revealObserver.observe(el));
+        if (containerRef.current) {
+            const revealElements = containerRef.current.querySelectorAll('.reveal');
+            revealElements.forEach(el => revealObserver.observe(el));
+        }
 
         // Active-section observer for dot navigation
         const sectionObserver = new IntersectionObserver(
@@ -67,6 +69,7 @@ function Home() {
                 {sections.map(({ id, label }) => (
                     <button
                         key={id}
+                        type="button"
                         className={`dot-item ${activeSection === id ? 'active' : ''}`}
                         onClick={() => scrollTo(id)}
                         title={label}
@@ -93,7 +96,7 @@ function Home() {
                             to accelerate your career.
                         </p>
                         <div className="hero-actions">
-                            <Link to="/SignUp" className="hero-cta-primary">Analyze Your Resume</Link>
+                            <Link to="/Analyze" className="hero-cta-primary">Analyze Your Resume</Link>
                             <button type="button" onClick={() => scrollTo('features')} className="hero-cta-secondary">Learn More</button>
                         </div>
                     </div>
