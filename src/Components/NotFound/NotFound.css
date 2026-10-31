@@ -1,52 +1,133 @@
 .notfound-page {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 20px;
+  min-height: 85dvh;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  align-items: center;
+  gap: 64px;
+  padding-top: 164px;
+  padding-bottom: 100px;
+  color: var(--ink);
 }
-
+.notfound-context {
+  color: var(--accent);
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 28px;
+}
+.notfound-content h1 {
+  font-size: clamp(44px, 5.5vw, 76px);
+  line-height: 1.08;
+  font-weight: 600;
+  letter-spacing: -0.06em;
+  margin: 0 0 28px;
+  max-width: 10ch;
+}
+.notfound-description {
+  max-width: 42ch;
+  font-size: 18px;
+  line-height: 1.75;
+  color: var(--muted);
+  margin: 0 0 36px;
+}
+.notfound-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 22px;
+}
+.notfound-profile-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  min-height: 44px;
+  transition: transform 350ms cubic-bezier(0.2, 0.75, 0.25, 1);
+}
+.notfound-profile-link:hover {
+  transform: translateX(3px);
+}
+.notfound-profile-link svg {
+  width: 18px;
+  height: 18px;
+}
+.notfound-art-shell {
+  background: var(--surface);
+  padding: 8px;
+  border-radius: 32px;
+  animation: notfound-arrive 900ms cubic-bezier(0.2, 0.75, 0.25, 1) both;
+}
+.notfound-art {
+  min-height: 400px;
+  border-radius: 25px;
+  background: var(--accent-soft);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 32px;
+  gap: 44px;
+}
+.notfound-number {
+  font-family: 'Manrope', sans-serif;
+  font-size: clamp(110px, 14vw, 190px);
+  letter-spacing: -0.08em;
+  line-height: 1;
+  color: var(--accent);
+  font-weight: 500;
+  padding-right: 0.08em;
+}
+.notfound-route {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  color: var(--accent);
+}
+.notfound-route > span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.notfound-route svg {
+  width: 18px;
+  height: 18px;
+}
 .notfound-content {
-    text-align: center;
+  animation: notfound-arrive 800ms cubic-bezier(0.2, 0.75, 0.25, 1) both;
 }
-
-.notfound-code {
-    font-size: clamp(80px, 15vw, 140px);
-    font-weight: 700;
-    color: #5EEAD4;
-    margin: 0;
-    line-height: 1;
-    letter-spacing: -0.04em;
+@keyframes notfound-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-
-.notfound-content h2 {
-    font-size: 24px;
-    font-weight: 600;
-    color: #F9FAFB;
-    margin: 16px 0 12px;
-}
-
-.notfound-content p {
-    font-size: 15px;
-    color: #6B7280;
-    margin: 0 0 32px;
-}
-
-.notfound-link {
-    display: inline-flex;
-    align-items: center;
-    padding: 12px 28px;
-    background: rgba(94, 234, 212, 0.1);
-    border: 1px solid rgba(94, 234, 212, 0.3);
-    color: #5EEAD4;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 600;
-    border-radius: 10px;
-    transition: background 0.2s, color 0.2s;
-}
-
-.notfound-link:hover {
-    background: #5EEAD4;
-    color: #0A0E1A;
+@media (max-width: 767px) {
+  .notfound-page {
+    padding-top: 145px;
+    padding-bottom: 64px;
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+  .notfound-content h1 {
+    font-size: clamp(45px, 12vw, 68px);
+    max-width: 11ch;
+  }
+  .notfound-description {
+    font-size: 17px;
+  }
+  .notfound-art {
+    min-height: 300px;
+    gap: 28px;
+  }
+  .notfound-number {
+    font-size: 138px;
+  }
 }

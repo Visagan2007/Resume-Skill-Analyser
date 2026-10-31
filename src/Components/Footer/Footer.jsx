@@ -1,68 +1,106 @@
+import { Link, NavLink } from 'react-router';
+import Icon from '../UI/Icon';
+import BrandSymbol from '../UI/BrandSymbol';
+import { scrollPageTo } from '../../smoothScroll.js';
 import './Footer.css';
-import { MdLocationOn, MdEmail, MdPhone } from "react-icons/md";
-import { FaXTwitter, FaLinkedinIn, FaInstagram, FaFacebookF } from "react-icons/fa6";
-import { Link } from 'react-router-dom';
-import Icon from './icon.png';
 
+const currentYear = new Date().getFullYear();
 
-function Footer() {
-    return (
-        <footer className='Ffooter'>
-            <div className='Ftop'>
-                <div className='Fbrand'>
-                    <div className='Flogo-box'>
-                        <img src={Icon} alt="Resume Skill Analyser logo" className='Flogo-img' />
-                    </div>
-                    <div className='Fcontact'>
-                        <MdLocationOn />
-                        <p>50 S. 16th Street, Philadelphia, PA 19102</p>
-                    </div>
-                    <div className='Fcontact'>
-                        <MdEmail />
-                        <p>info@rsa.io</p>
-                    </div>
-                    <div className='Fcontact'>
-                        <MdPhone />
-                        <p>215-326-9369</p>
-                    </div>
-                    <div className='Fsocials'>
-                        <a href="https://x.com" target="_blank" rel="noopener noreferrer" aria-label="Follow us on X (Twitter)"><FaXTwitter /></a>
-                        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="Follow us on LinkedIn"><FaLinkedinIn /></a>
-                        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Follow us on Instagram"><FaInstagram /></a>
-                        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Follow us on Facebook"><FaFacebookF /></a>
-                    </div>
-                </div>
-
-                <div className='Fcol'>
-                    <h4>Product</h4>
-                    <ul>
-                        <li><Link to="/Analyze">Analyze</Link></li>
-                        <li><Link to="/AboutUs">About Us</Link></li>
-                    </ul>
-                </div>
-
-                <div className='Fcol'>
-                    <h4>Company</h4>
-                    <ul>
-                        <li><Link to="/">Features</Link></li>
-                        <li><Link to="/AboutUs">Why RSA</Link></li>
-                    </ul>
-                </div>
-
-                <div className='Fcol'>
-                    <h4>Support</h4>
-                    <ul>
-                        <li><Link to="/AboutUs">Contact Us</Link></li>
-                        <li><a href="#" onClick={(e) => e.preventDefault()} aria-label="Privacy Policy">Privacy Policy</a></li>
-                        <li><a href="#" onClick={(e) => e.preventDefault()} aria-label="Terms of Service">Terms of Service</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div className='Fbottom'>
-                <p>&copy; {new Date().getFullYear()} Resume Skill Analyser. All rights reserved.</p>
-            </div>
-        </footer>
-    )
+function backToTop() {
+  document.getElementById('main-content')?.focus({ preventScroll: true });
+  scrollPageTo(0);
 }
-export default Footer;
+
+export default function Footer() {
+  return (
+    <footer className="site-footer">
+      <div className="footer-panel" data-liquid-glass>
+        <div className="footer-masthead">
+          <span className="footer-name">
+            <BrandSymbol />
+            Resume Skill Analyser
+          </span>
+          <button className="footer-top-button" type="button" onClick={backToTop}>
+            Back to top
+            <span>
+              <Icon name="arrowUpRight" size={18} />
+            </span>
+          </button>
+        </div>
+        <div className="footer-main">
+          <div className="footer-signature">
+            <Link className="footer-brand" to="/" aria-label="Resume Skill Analyser home">
+              <span aria-hidden="true">
+                rsa<span className="footer-brand-dot">.</span>
+              </span>
+            </Link>
+            <p>
+              Make sense of your experience.
+              <br />
+              Make room for what comes next.
+            </p>
+          </div>
+          <div className="footer-invitation">
+            <h2>
+              Your next chapter.
+              <br />
+              <span>It starts with you.</span>
+            </h2>
+            <Link className="footer-profile-link" to="/Analyze">
+              Build my profile
+              <span>
+                <Icon name="arrowUpRight" size={22} />
+              </span>
+            </Link>
+          </div>
+          <nav className="footer-nav" aria-label="Footer navigation">
+            <div className="footer-nav-group">
+              <h3>Explore</h3>
+              <NavLink to="/" end>
+                Overview
+                <Icon name="arrowUpRight" size={15} />
+              </NavLink>
+              <NavLink to="/Analyze">
+                Your workspace
+                <Icon name="arrowUpRight" size={15} />
+              </NavLink>
+              <NavLink to="/AboutUs">
+                Our approach
+                <Icon name="arrowUpRight" size={15} />
+              </NavLink>
+              <NavLink to="/Settings">
+                Settings
+                <Icon name="arrowUpRight" size={15} />
+              </NavLink>
+            </div>
+            <div className="footer-nav-group">
+              <h3>Your account</h3>
+              <NavLink to="/SignIn">
+                Sign in
+                <Icon name="arrowUpRight" size={15} />
+              </NavLink>
+              <NavLink to="/SignUp">
+                Create an account
+                <Icon name="arrowUpRight" size={15} />
+              </NavLink>
+            </div>
+          </nav>
+        </div>
+        <div className="footer-bottom">
+          <span>© {currentYear} Resume Skill Analyser</span>
+          <span className="footer-colophon">Made for your next chapter.</span>
+          <details className="footer-disclosure">
+            <summary>
+              About this preview
+              <Icon name="plus" size={15} />
+            </summary>
+            <p>
+              Your profile stays in the current browser session. Sign-in and automated analysis are
+              not connected to a service yet.
+            </p>
+          </details>
+        </div>
+      </div>
+    </footer>
+  );
+}

@@ -1,0 +1,551 @@
+/* Site-wide material. Optical refraction is adapted from dashersw/liquid-glass-js;
+   see Components/UI/liquid-glass/ for the pinned source and MIT notice. */
+:root {
+  --glass-ground: #f4eff9;
+  --glass-paper: rgb(255 255 255 / 58%);
+  --glass-navbar: rgb(255 255 255 / 44%);
+  --glass-wash: rgb(220 204 239 / 30%);
+  --glass-control: rgb(255 255 255 / 45%);
+  --glass-overlay: rgb(251 248 255 / 94%);
+  --glass-edge: rgb(255 255 255 / 85%);
+  --glass-outline: rgb(118 84 151 / 15%);
+  --glass-reflection: rgb(255 255 255 / 64%);
+  --glass-shade: rgb(102 68 137 / 10%);
+  --glass-shadow: 0 16px 44px -22px rgb(77 44 114 / 29%), 0 4px 12px -6px rgb(77 44 114 / 10%);
+  --glass-inset:
+    inset 0 1px 0 var(--glass-reflection), inset 0 -1px 0 var(--glass-shade),
+    inset 1px 0 0 rgb(255 255 255 / 18%);
+  --glass-primary: rgb(64 35 97 / 93%);
+  --glass-primary-hover: rgb(78 44 115 / 96%);
+  --glass-primary-ink: #fff;
+  --glass-selected: rgb(177 146 211 / 27%);
+  --glass-ribbon: rgb(181 145 220 / 24%);
+  --glass-ribbon-light: rgb(255 255 255 / 76%);
+  --glass-ribbon-shadow: rgb(155 122 196 / 13%);
+  --glass-reduced-ground: var(--glass-ground);
+  --glass-reduced-ribbon: var(--glass-ribbon);
+  --glass-reduced-paper: var(--paper);
+  --glass-reduced-navbar: var(--paper);
+  --glass-reduced-wash: var(--surface);
+  --glass-reduced-control: var(--bg);
+  --glass-reduced-overlay: var(--paper);
+  --glass-reduced-selected: var(--glass-selected);
+  --glass-reduced-reflection: var(--glass-reflection);
+}
+
+:root[data-theme='dark'] {
+  --glass-ground: #16101f;
+  --glass-paper: rgb(43 33 57 / 66%);
+  --glass-navbar: rgb(43 33 57 / 50%);
+  --glass-wash: rgb(101 73 134 / 20%);
+  --glass-control: rgb(137 106 171 / 12%);
+  --glass-overlay: rgb(39 29 52 / 96%);
+  --glass-edge: rgb(231 211 255 / 18%);
+  --glass-outline: rgb(219 192 248 / 13%);
+  --glass-reflection: rgb(244 226 255 / 19%);
+  --glass-shade: rgb(7 3 13 / 30%);
+  --glass-shadow: 0 20px 50px -22px rgb(4 1 10 / 60%), 0 4px 12px -6px rgb(4 1 10 / 40%);
+  --glass-inset:
+    inset 0 1px 0 var(--glass-reflection), inset 0 -1px 0 var(--glass-shade),
+    inset 1px 0 0 rgb(255 255 255 / 4%);
+  --glass-primary: rgb(203 178 234 / 94%);
+  --glass-primary-hover: rgb(220 199 244 / 98%);
+  --glass-primary-ink: #241334;
+  --glass-selected: rgb(171 132 214 / 24%);
+  --glass-ribbon: rgb(159 109 214 / 18%);
+  --glass-ribbon-light: rgb(215 179 255 / 12%);
+  --glass-ribbon-shadow: rgb(13 6 24 / 30%);
+  --glass-reduced-ground: #21192c;
+  --glass-reduced-ribbon: rgb(174 138 218 / 32%);
+  --glass-reduced-paper: #3a2f49;
+  --glass-reduced-navbar: #33283f;
+  --glass-reduced-wash: #392c49;
+  --glass-reduced-control: #473955;
+  --glass-reduced-overlay: #382c47;
+  --glass-reduced-selected: #51405f;
+  --glass-reduced-reflection: rgb(244 226 255 / 8%);
+}
+
+.ABody {
+  position: relative;
+  isolation: isolate;
+  background: transparent;
+}
+
+.glass-scenery {
+  --glass-drift-x: clamp(18px, 3vw, 56px);
+  --glass-drift-y: clamp(20px, 4vh, 44px);
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 82% 12%, var(--glass-ribbon), transparent 48%),
+    radial-gradient(ellipse at 5% 80%, var(--glass-ribbon), transparent 52%), var(--glass-ground);
+}
+
+/* Broad folds drift behind the interface and through its glass surfaces. */
+.glass-scenery > span {
+  --fold-angle: -32deg;
+  position: absolute;
+  width: max(75vw, 640px);
+  height: max(40vw, 330px);
+  border-radius: 50%;
+  background: linear-gradient(
+    145deg,
+    transparent 22%,
+    var(--glass-ribbon-light) 45%,
+    var(--glass-ribbon) 59%,
+    transparent 76%
+  );
+  box-shadow:
+    inset 0 2px 2px var(--glass-ribbon-light),
+    0 36px 80px -42px var(--glass-ribbon-shadow);
+  transform: rotate(var(--fold-angle));
+  animation: glass-flow 28s cubic-bezier(0.45, 0, 0.55, 1) -7s infinite alternate;
+}
+
+.glass-scenery > span:nth-child(1) {
+  top: -22%;
+  right: -24%;
+}
+.glass-scenery > span:nth-child(2) {
+  --fold-angle: -38deg;
+  top: 33%;
+  left: -45%;
+  animation-duration: 36s;
+  animation-delay: -22s;
+  animation-direction: alternate-reverse;
+}
+.glass-scenery > span:nth-child(3) {
+  --fold-angle: -30deg;
+  right: -39%;
+  bottom: -37%;
+  animation-duration: 44s;
+  animation-delay: -14s;
+}
+
+@keyframes glass-flow {
+  from {
+    transform: translate(calc(var(--glass-drift-x) * -1), var(--glass-drift-y))
+      rotate(calc(var(--fold-angle) - 3deg)) scale(0.98);
+  }
+  to {
+    transform: translate(var(--glass-drift-x), calc(var(--glass-drift-y) * -1))
+      rotate(calc(var(--fold-angle) + 3deg)) scale(1.06);
+  }
+}
+
+.glass-scenery[data-paused] > span {
+  animation-play-state: paused;
+}
+
+/* Outer surfaces keep existing geometry and never clip form popovers. */
+.ABody
+  :is(
+    .navbar,
+    .preview-stage,
+    .inventory-stage,
+    .target-stage,
+    .perspective-art,
+    .closing-panel,
+    .profile-sheet-shell,
+    .profile-live-summary,
+    .about-map-shell,
+    .about-principles,
+    .auth-journey-shell,
+    .auth-form-shell,
+    .notfound-art-shell
+  ) {
+  background: linear-gradient(135deg, var(--glass-reflection), transparent 42%), var(--glass-wash);
+  border: 1px solid var(--glass-edge);
+  box-shadow: var(--glass-shadow), var(--glass-inset);
+  -webkit-backdrop-filter: blur(20px) saturate(1.18);
+  backdrop-filter: blur(20px) saturate(1.18);
+  background-clip: padding-box;
+}
+
+.ABody .navbar {
+  --glass-highlight-width: 110px;
+  --glass-highlight-height: 70px;
+  background:
+    linear-gradient(115deg, var(--glass-reflection), transparent 38%), var(--glass-navbar);
+  box-shadow:
+    0 12px 42px -16px var(--popover-shadow),
+    var(--glass-inset);
+}
+
+.ABody
+  :is(
+    .career-preview-shell,
+    .profile-sheet-shell,
+    .about-map-shell,
+    .auth-journey-shell,
+    .auth-form-shell,
+    .notfound-art-shell
+  ) {
+  background-color: var(--glass-wash);
+}
+
+.ABody .career-preview-shell {
+  background: var(--glass-control);
+  box-shadow:
+    0 0 0 1px var(--glass-edge),
+    var(--glass-inset);
+}
+
+/* Paper interiors are more opaque so small text remains comfortable to read. */
+.ABody
+  :is(
+    .career-preview,
+    .inventory-paper,
+    .target-paper,
+    .perspective-paper,
+    .profile-sheet,
+    .about-map-paper,
+    .auth-journey,
+    .auth-form-panel,
+    .notfound-art
+  ) {
+  background: linear-gradient(145deg, var(--glass-control), transparent 58%), var(--glass-paper);
+  box-shadow:
+    var(--glass-inset),
+    0 0 0 1px var(--glass-outline);
+  -webkit-backdrop-filter: blur(14px) saturate(1.08);
+  backdrop-filter: blur(14px) saturate(1.08);
+  outline: none;
+}
+
+.ABody .process-section {
+  background: var(--glass-wash);
+  box-shadow:
+    inset 0 1px 0 var(--glass-edge),
+    inset 0 -1px 0 var(--glass-edge);
+}
+
+.ABody .process-flow {
+  gap: 16px;
+}
+.ABody .process-flow > li {
+  background: linear-gradient(145deg, var(--glass-reflection), transparent 65%), var(--glass-wash);
+  border: 1px solid var(--glass-edge);
+  box-shadow: var(--glass-shadow), var(--glass-inset);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+}
+
+.ABody .footer-panel {
+  background: linear-gradient(145deg, var(--glass-control), transparent 65%), var(--glass-wash);
+  border: 1px solid var(--glass-edge);
+  box-shadow: var(--glass-shadow), var(--glass-inset);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+}
+
+.ABody :is(.mobile-menu, .profile-options) {
+  background: linear-gradient(125deg, var(--glass-control), transparent 70%), var(--glass-overlay);
+  border: 1px solid var(--glass-edge);
+  box-shadow:
+    0 24px 70px -24px var(--overlay),
+    var(--glass-inset);
+  -webkit-backdrop-filter: blur(24px) saturate(1.15);
+  backdrop-filter: blur(24px) saturate(1.15);
+}
+.ABody .mobile-menu::backdrop {
+  background: var(--overlay);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+.ABody .mobile-menu {
+  background: linear-gradient(115deg, var(--glass-reflection), transparent 38%), var(--glass-paper);
+  box-shadow:
+    0 12px 42px -16px var(--popover-shadow),
+    var(--glass-inset);
+}
+.ABody .mobile-menu.is-expanded {
+  background-color: var(--glass-overlay);
+}
+
+/* Compact glass controls share the same illuminated rim. */
+.ABody :is(.button, .settings-link, .menu-toggle),
+.ABody .hero-bottom > a {
+  border: 1px solid var(--glass-edge);
+  background:
+    linear-gradient(145deg, var(--glass-reflection), transparent 65%), var(--glass-control);
+  box-shadow:
+    0 6px 16px -10px var(--popover-shadow),
+    var(--glass-inset);
+  -webkit-backdrop-filter: blur(12px) saturate(1.15);
+  backdrop-filter: blur(12px) saturate(1.15);
+  transition:
+    transform 300ms var(--ease),
+    background-color 300ms var(--ease),
+    box-shadow 300ms var(--ease);
+}
+.ABody .button-primary {
+  background:
+    linear-gradient(160deg, rgb(255 255 255 / 18%), transparent 60%), var(--glass-primary);
+  border-color: rgb(197 165 230 / 38%);
+  color: var(--glass-primary-ink);
+  box-shadow:
+    0 8px 20px -10px rgb(76 39 111 / 52%),
+    inset 0 1px 0 rgb(255 255 255 / 30%),
+    inset 0 -1px 0 rgb(22 8 36 / 20%);
+}
+.ABody .button-primary:hover {
+  background-color: var(--glass-primary-hover);
+  box-shadow:
+    0 12px 26px -12px rgb(76 39 111 / 54%),
+    inset 0 1px 0 rgb(255 255 255 / 42%);
+}
+.ABody :is(.settings-link, .menu-toggle):is(:hover, .active) {
+  background-color: var(--glass-selected);
+}
+.ABody .button-icon {
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 22%);
+}
+
+@media (forced-colors: none) {
+  :root:not([data-theme='dark']) :is(.floating-settings, .nav-controls .menu-toggle) {
+    background:
+      linear-gradient(145deg, rgb(255 255 255 / 40%), transparent 65%), var(--accent-soft);
+    border-color: color-mix(in srgb, var(--accent) 32%, var(--accent-soft));
+  }
+  :root:not([data-theme='dark'])
+    :is(.floating-settings:hover, .floating-settings.active, .nav-controls .menu-toggle:hover) {
+    background-color: color-mix(in srgb, var(--accent-soft) 75%, var(--lavender));
+    border-color: color-mix(in srgb, var(--accent) 48%, var(--accent-soft));
+  }
+}
+
+.ABody
+  :is(
+    .role-tabs,
+    .sample-label,
+    .sample-skill,
+    .document-mark,
+    .skill-collection > span,
+    .path-node,
+    .about-skill-list span,
+    .profile-selected li,
+    .profile-review-group li,
+    .profile-stage-number,
+    .auth-journey-symbol,
+    .auth-small-mark,
+    .about-map-symbol,
+    .inventory-check
+  ) {
+  background: var(--glass-control);
+  box-shadow:
+    var(--glass-inset),
+    0 0 0 1px var(--glass-outline);
+}
+.ABody .role-tabs > button[aria-selected='true'] {
+  background: var(--glass-paper);
+  box-shadow:
+    var(--glass-inset),
+    0 2px 8px -3px var(--popover-shadow);
+}
+.ABody .role-tabs > button:hover {
+  color: var(--ink);
+  background-color: var(--glass-control);
+}
+.ABody .role-tabs > button[aria-selected='true']:hover {
+  background: var(--glass-paper);
+}
+
+.ABody
+  :is(
+    .snapshot-next,
+    .about-path-destination,
+    .profile-review-direction,
+    .profile-review-notice,
+    .auth-feedback
+  ) {
+  background: linear-gradient(125deg, var(--glass-control), transparent), var(--glass-selected);
+  box-shadow:
+    var(--glass-inset),
+    0 0 0 1px var(--glass-outline);
+}
+.ABody :is(.next-icon, .profile-review-mark) {
+  background: var(--glass-paper);
+  box-shadow: var(--glass-inset);
+}
+.ABody .path-node.target-node {
+  background: var(--glass-primary);
+  color: var(--glass-primary-ink);
+}
+.ABody .auth-journey-next .auth-journey-symbol {
+  background: var(--glass-primary);
+  color: var(--glass-primary-ink);
+}
+
+.ABody .profile-stages button.is-current {
+  background: var(--glass-paper);
+  box-shadow:
+    var(--glass-inset),
+    0 0 0 1px var(--glass-edge),
+    var(--glass-shadow);
+}
+.ABody .profile-stages button:hover:not(:disabled) {
+  background: var(--glass-control);
+}
+.ABody :is(.is-current, .is-complete) .profile-stage-number {
+  background: var(--glass-selected);
+}
+.ABody .profile-focus-options label {
+  background: var(--glass-control);
+  box-shadow:
+    var(--glass-inset),
+    0 0 0 1px var(--glass-outline);
+}
+.ABody .profile-focus-options label:is(:hover, .is-selected) {
+  background: var(--glass-selected);
+  box-shadow:
+    var(--glass-inset),
+    0 0 0 1px var(--lavender);
+}
+.ABody .profile-options [role='option'].is-highlighted {
+  background: var(--glass-selected);
+}
+
+.ABody :is(.profile-select input, .auth-field-shell) {
+  background: var(--glass-control);
+  border: 1px solid var(--glass-outline);
+  box-shadow:
+    inset 0 1px 3px var(--glass-shade),
+    0 1px 0 var(--glass-reflection);
+}
+.ABody .auth-field-shell input {
+  background: transparent;
+}
+.ABody .profile-select input:hover {
+  border-color: var(--lavender);
+}
+.ABody .profile-select input:focus {
+  border-color: var(--accent);
+  background: var(--glass-paper);
+}
+.ABody .auth-field-shell:focus-within {
+  background: var(--glass-paper);
+}
+.ABody .profile-continue .button:disabled {
+  background: var(--glass-control);
+  color: var(--muted);
+  border-color: var(--glass-outline);
+  box-shadow: var(--glass-inset);
+  transform: none;
+}
+.ABody .profile-continue .button:disabled .button-icon {
+  background: var(--glass-wash);
+}
+
+/* Only optical surfaces get an additional filter. Layout/field wrappers must
+   not create stacking contexts that would put listboxes behind the next field. */
+.ABody .liquid-glass-surface[data-liquid-glass-ready] {
+  -webkit-backdrop-filter: var(--liquid-glass-filter);
+  backdrop-filter: var(--liquid-glass-filter);
+}
+.ABody :is(.navbar, .preview-stage, .closing-panel, .about-principles) {
+  --glass-pointer-reflection: transparent;
+  background-image: radial-gradient(
+    ellipse var(--glass-highlight-width, 136px) var(--glass-highlight-height, 88px) at
+      var(--glass-pointer-x, 50%) var(--glass-pointer-y, 50%),
+    var(--glass-pointer-reflection),
+    transparent
+  );
+}
+.ABody :is(.navbar, .preview-stage, .closing-panel, .about-principles)[data-glass-pointer] {
+  --glass-pointer-reflection: color-mix(in srgb, var(--glass-reflection) 55%, transparent);
+}
+
+@media (max-width: 767px) {
+  .glass-scenery {
+    --glass-drift-x: 14px;
+    --glass-drift-y: 18px;
+  }
+  .glass-scenery > span:nth-child(1) {
+    right: -110%;
+    top: -13%;
+  }
+  .glass-scenery > span:nth-child(2) {
+    left: -130%;
+    top: 42%;
+  }
+  .ABody .process-flow {
+    gap: 12px;
+  }
+}
+
+/* Opaque plum layers and a static wash retain the palette without live optics. */
+:root[data-transparency='reduced'] .glass-scenery > span {
+  opacity: 0;
+  animation-play-state: paused;
+}
+:root[data-transparency='reduced'] .ABody {
+  --glass-ground: var(--glass-reduced-ground);
+  --glass-ribbon: var(--glass-reduced-ribbon);
+  --glass-paper: var(--glass-reduced-paper);
+  --glass-navbar: var(--glass-reduced-navbar);
+  --glass-wash: var(--glass-reduced-wash);
+  --glass-control: var(--glass-reduced-control);
+  --glass-overlay: var(--glass-reduced-overlay);
+  --glass-selected: var(--glass-reduced-selected);
+  --glass-reflection: var(--glass-reduced-reflection);
+}
+:root[data-transparency='reduced'] .ABody *,
+:root[data-transparency='reduced'] .ABody *::backdrop {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+@media (prefers-reduced-transparency: reduce) {
+  :root:not([data-transparency='full']) .glass-scenery > span {
+    opacity: 0;
+    animation-play-state: paused;
+  }
+  :root:not([data-transparency='full']) .ABody {
+    --glass-ground: var(--glass-reduced-ground);
+    --glass-ribbon: var(--glass-reduced-ribbon);
+    --glass-paper: var(--glass-reduced-paper);
+    --glass-navbar: var(--glass-reduced-navbar);
+    --glass-wash: var(--glass-reduced-wash);
+    --glass-control: var(--glass-reduced-control);
+    --glass-overlay: var(--glass-reduced-overlay);
+    --glass-selected: var(--glass-reduced-selected);
+    --glass-reflection: var(--glass-reduced-reflection);
+  }
+  :root:not([data-transparency='full']) .ABody *,
+  :root:not([data-transparency='full']) .ABody *::backdrop {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+}
+@media (forced-colors: active) {
+  .glass-scenery {
+    display: none;
+  }
+  .ABody .liquid-glass-surface {
+    box-shadow: none;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+  .ABody
+    :is(
+      .navbar,
+      .button,
+      .settings-link,
+      .menu-toggle,
+      .profile-sheet,
+      .auth-form-panel,
+      .profile-options,
+      .mobile-menu,
+      .role-tabs > button[aria-selected='true'],
+      .profile-focus-options label
+    ) {
+    border: 1px solid ButtonText;
+    box-shadow: none;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+}
