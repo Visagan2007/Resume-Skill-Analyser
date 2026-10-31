@@ -1,15 +1,15 @@
-import { useLayoutEffect, useRef } from 'react';
-import Icon from '../UI/Icon';
+import { useCallback, useLayoutEffect, useMemo, useRef } from 'react';
+import Icon from '../UI/Icon.jsx';
 import { scrollPageTo } from '../../smoothScroll.js';
-import ProfileFields from './ProfileFields';
-import ProfileReview from './ProfileReview';
-import ProfileSidebar from './ProfileSidebar';
+import ProfileFields from './ProfileFields.jsx';
+import ProfileReview from './ProfileReview.jsx';
+import ProfileSidebar from './ProfileSidebar.jsx';
 import { useProfileDraft } from './useProfileDraft.js';
 import { profileStages } from './profileOptions.js';
 import { getContinueHint, getStageValidity } from './profileState.js';
 import './Analyze.css';
 
-function Analyze() {
+export default function Analyze() {
   const { formData, setFormData, step, setStep, reviewing, setReviewing } = useProfileDraft();
   const headingRef = useRef(null);
   const previousStage = useRef({ step, reviewing });
@@ -23,28 +23,44 @@ function Analyze() {
     scrollPageTo(0);
   }, [step, reviewing]);
 
-  const updateField = (name, value) => setFormData((previous) => ({ ...previous, [name]: value }));
-  const toggleFocus = (id) =>
-    setFormData((previous) => ({
-      ...previous,
-      focusAreas: previous.focusAreas.includes(id)
-        ? previous.focusAreas.filter((item) => item !== id)
-        : [...previous.focusAreas, id],
-    }));
-  const validStages = getStageValidity(formData);
-  const canContinue = validStages[step - 1];
+  const updateField = useCallback(
+    (name, value) => setFormData((previous) => ({ ...previous, [name]: value })),
+    [setFormData],
+  );
+
+  const toggleFocus = useCallback(
+    (id) =>
+      setFormData((previous) => ({
+        ...previous,
+        focusAreas: previous.focusAreas.includes(id)
+          ? previous.focusAreas.filter((item) => item !== id)
+          : [...previous.focusAreas, id],
+      })),
+    [setFormData],
+  );
+
+  const validStages = useMemo(() => getStageValidity(formData), [formData]);
+  const canContinue = Boolean(validStages[step - 1]);
   const stage = profileStages[step - 1];
   const lastStep = step === profileStages.length;
-  const editStage = (next) => {
-    setReviewing(false);
-    setStep(next);
-  };
-  const onContinue = (event) => {
-    event.preventDefault();
-    if (!canContinue) return;
-    if (!lastStep) setStep((previous) => previous + 1);
-    else if (validStages.every(Boolean)) setReviewing(true);
-  };
+
+  const editStage = useCallback(
+    (next) => {
+      setReviewing(false);
+      setStep(next);
+    },
+    [setReviewing, setStep],
+  );
+
+  const onContinue = useCallback(
+    (event) => {
+      event.preventDefault();
+      if (!canContinue) return;
+      if (!lastStep) setStep((previous) => previous + 1);
+      else if (validStages.every(Boolean)) setReviewing(true);
+    },
+    [canContinue, lastStep, setStep, setReviewing, validStages],
+  );
 
   return (
     <div className="analyze-page page-shell">
@@ -121,5 +137,3 @@ function Analyze() {
     </div>
   );
 }
-
-export default Analyze;

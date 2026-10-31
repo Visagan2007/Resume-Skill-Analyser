@@ -1,6 +1,7 @@
-import Icon from '../UI/Icon';
+import { memo } from 'react';
+import Icon from '../UI/Icon.jsx';
 
-export default function AuthJourney({ title, steps }) {
+function AuthJourney({ title, steps }) {
   return (
     <div className="auth-journey-shell" data-ui>
       <div className="auth-journey">
@@ -23,3 +24,5 @@ export default function AuthJourney({ title, steps }) {
     </div>
   );
 }
+
+export default memo(AuthJourney);

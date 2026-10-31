@@ -136,7 +136,7 @@ export const jobRoles = [
   'VP of Sales',
   'VP of Supply Chain',
   'Vice Principal',
-].sort();
+];
 
 export const domains = [
   'Architecture',
@@ -162,7 +162,7 @@ export const domains = [
   'Supply Chain & Operations',
   'Teaching & Education',
   'UI/UX Design',
-].sort();
+];
 
 export const educationLevels = [
   "Bachelor's Degree",
@@ -203,7 +203,7 @@ export const fieldsOfStudy = [
   'Statistics',
   'Structural Engineering',
   'Urban Planning',
-].sort();
+];
 
 export const experienceBands = [
   '0.5 (Entry-level 0-1 yrs)',
@@ -231,7 +231,7 @@ export const softSkillsList = [
   'Strategic Thinking',
   'Team Collaboration',
   'Time Management',
-].sort();
+];
 
 export const techSkillsList = [
   '3D Modeling',
@@ -335,7 +335,7 @@ export const techSkillsList = [
   'Vulnerability Assessment',
   'Windows Server',
   'Wireframing',
-].sort();
+];
 
 export const certificationsList = [
   'Agile Analysis Certification',
@@ -435,7 +435,7 @@ export const certificationsList = [
   'TensorFlow Developer Certificate',
   'TOGAF',
   'Zendesk Certified Administrator',
-].sort();
+];
 
 export const focusOptions = [
   { id: 'technical', label: 'Technical Skills', desc: 'Programming languages, frameworks, tools' },

@@ -1,8 +1,8 @@
 import { Link } from 'react-router';
-import Icon from '../UI/Icon';
+import Icon from '../UI/Icon.jsx';
 import './NotFound.css';
 
-function NotFound() {
+export default function NotFound() {
   return (
     <div className="notfound-page page-shell">
       <div className="notfound-content">
@@ -37,5 +37,3 @@ function NotFound() {
     </div>
   );
 }
-
-export default NotFound;

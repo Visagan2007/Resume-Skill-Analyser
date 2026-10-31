@@ -1,4 +1,5 @@
-import Icon from '../UI/Icon';
+import { memo } from 'react';
+import Icon from '../UI/Icon.jsx';
 import useVisualEffects from '../../useVisualEffects.js';
 import './Settings.css';
 
@@ -25,7 +26,7 @@ const effects = [
   },
 ];
 
-function ThemePreview({ theme }) {
+const ThemePreview = memo(function ThemePreview({ theme }) {
   return (
     <span className={`settings-theme-preview settings-theme-preview--${theme}`} aria-hidden="true">
       <span className="settings-preview-nav">
@@ -41,7 +42,7 @@ function ThemePreview({ theme }) {
       </span>
     </span>
   );
-}
+});
 
 export default function Settings({ theme, onThemeChange }) {
   const { preference, setPreference } = useVisualEffects();

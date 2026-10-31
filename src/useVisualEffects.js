@@ -1,4 +1,4 @@
-import { useSyncExternalStore } from 'react';
+import { useMemo, useSyncExternalStore } from 'react';
 import {
   getServerVisualPreferences,
   getVisualPreferences,
@@ -12,5 +12,8 @@ export default function useVisualEffects() {
     getVisualPreferences,
     getServerVisualPreferences,
   );
-  return { ...preference, setPreference: setVisualEffectsPreference };
+  return useMemo(
+    () => ({ ...preference, setPreference: setVisualEffectsPreference }),
+    [preference],
+  );
 }

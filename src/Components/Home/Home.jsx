@@ -1,8 +1,8 @@
 import { useRef } from 'react';
 import { Link } from 'react-router';
-import Icon from '../UI/Icon';
+import Icon from '../UI/Icon.jsx';
 import useScrollReveal from '../../hooks/useScrollReveal.js';
-import CareerPreview from './CareerPreview';
+import CareerPreview from './CareerPreview.jsx';
 import './Home.css';
 
 const exampleSkills = [

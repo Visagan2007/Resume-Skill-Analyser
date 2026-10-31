@@ -1,5 +1,5 @@
-import { useId, useState } from 'react';
-import Icon from '../UI/Icon';
+import { memo, useCallback, useId, useState } from 'react';
+import Icon from '../UI/Icon.jsx';
 
 const examples = [
   {
@@ -22,18 +22,20 @@ const examples = [
   },
 ];
 
-function CoverageRing({ matched, total }) {
-  const circumference = 2 * Math.PI * 42;
+const RING_RADIUS = 42;
+const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
+
+const CoverageRing = memo(function CoverageRing({ matched, total }) {
   return (
     <div className="coverage-ring">
       <svg viewBox="0 0 100 100" aria-hidden="true">
-        <circle className="ring-track" cx="50" cy="50" r="42" />
+        <circle className="ring-track" cx="50" cy="50" r={RING_RADIUS} />
         <circle
           className="ring-value"
           cx="50"
           cy="50"
-          r="42"
-          strokeDasharray={`${(circumference * matched) / total} ${circumference}`}
+          r={RING_RADIUS}
+          strokeDasharray={`${(RING_CIRCUMFERENCE * matched) / total} ${RING_CIRCUMFERENCE}`}
           transform="rotate(-90 50 50)"
         />
       </svg>
@@ -43,25 +45,31 @@ function CoverageRing({ matched, total }) {
       </span>
     </div>
   );
-}
+});
 
-export default function CareerPreview() {
+function CareerPreview() {
   const [selected, setSelected] = useState(0);
   const example = examples[selected];
   const tabId = useId();
   const total = example.skills.length + example.gaps.length;
-  const changeTab = (event) => {
-    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
-    event.preventDefault();
-    const next =
-      event.key === 'Home'
-        ? 0
-        : event.key === 'End'
-          ? examples.length - 1
-          : (selected + (event.key === 'ArrowRight' ? 1 : -1) + examples.length) % examples.length;
-    setSelected(next);
-    document.getElementById(`${tabId}-${next}`)?.focus();
-  };
+
+  const changeTab = useCallback(
+    (event) => {
+      if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+      event.preventDefault();
+      const next =
+        event.key === 'Home'
+          ? 0
+          : event.key === 'End'
+            ? examples.length - 1
+            : (selected + (event.key === 'ArrowRight' ? 1 : -1) + examples.length) %
+              examples.length;
+      setSelected(next);
+      document.getElementById(`${tabId}-${next}`)?.focus();
+    },
+    [selected, tabId],
+  );
+
   return (
     <div className="preview-stage" data-ui>
       <div className="preview-stage-label">
@@ -157,3 +165,5 @@ export default function CareerPreview() {
     </div>
   );
 }
+
+export default memo(CareerPreview);

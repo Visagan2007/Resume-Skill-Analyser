@@ -1,7 +1,7 @@
-import { useEffect, useId, useRef, useState } from 'react';
-import Icon from '../UI/Icon';
+import { memo, useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
+import Icon from '../UI/Icon.jsx';
 
-export default function SelectionField({
+function SelectionField({
   options,
   value = '',
   selected,
@@ -18,62 +18,84 @@ export default function SelectionField({
   const [activeIndex, setActiveIndex] = useState(0);
   const optionRefs = useRef([]);
   const multiple = Array.isArray(selected);
-  const available = multiple ? options.filter((option) => !selected.includes(option)) : options;
-  const showAll = !query || (!multiple && query === value);
-  const normalizedQuery = query.toLowerCase();
-  const filtered = showAll
-    ? available
-    : available.filter((option) => option.toLowerCase().includes(normalizedQuery));
+
+  const available = useMemo(() => {
+    if (!multiple) return options;
+    const selectedSet = new Set(selected);
+    return options.filter((option) => !selectedSet.has(option));
+  }, [multiple, options, selected]);
+
+  const filtered = useMemo(() => {
+    if (!query || (!multiple && query === value)) return available;
+    const normalized = query.toLowerCase();
+    return available.filter((option) => option.toLowerCase().includes(normalized));
+  }, [available, multiple, query, value]);
+
   const currentIndex = Math.min(activeIndex, Math.max(0, filtered.length - 1));
 
   useEffect(() => {
-    if (isOpen) optionRefs.current[currentIndex]?.scrollIntoView({ block: 'nearest' });
-  }, [currentIndex, isOpen, query]);
+    optionRefs.current.length = filtered.length;
+    if (isOpen && optionRefs.current[currentIndex]) {
+      optionRefs.current[currentIndex].scrollIntoView({ block: 'nearest' });
+    }
+  }, [currentIndex, filtered.length, isOpen]);
 
-  const choose = (option) => {
-    if (multiple) onChange([...selected, option]);
-    else onChange(option);
-    setQuery('');
-    setActiveIndex(0);
-    setIsOpen(false);
-  };
+  const choose = useCallback(
+    (option) => {
+      if (multiple) onChange([...selected, option]);
+      else onChange(option);
+      setQuery('');
+      setActiveIndex(0);
+      setIsOpen(false);
+    },
+    [multiple, onChange, selected],
+  );
 
-  const open = () => {
+  const open = useCallback(() => {
     if (!isOpen) {
       setQuery(multiple ? '' : value);
       setActiveIndex(0);
       setIsOpen(true);
     }
-  };
+  }, [isOpen, multiple, value]);
 
-  const close = (event) => {
-    if (event.currentTarget.contains(event.relatedTarget)) return;
-    if (!multiple && isOpen) {
-      const exact = options.find((option) => option.toLowerCase() === query.trim().toLowerCase());
-      if (exact && exact !== value) onChange(exact);
-    }
-    setIsOpen(false);
-    setQuery('');
-  };
-
-  const onKeyDown = (event) => {
-    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
-      event.preventDefault();
-      if (!isOpen) open();
-      else
-        setActiveIndex((index) =>
-          Math.max(0, Math.min(filtered.length - 1, index + (event.key === 'ArrowDown' ? 1 : -1))),
-        );
-    } else if (event.key === 'Enter' && isOpen) {
-      event.preventDefault();
-      if (filtered.length) choose(filtered[currentIndex]);
-    } else if (event.key === 'Escape' && isOpen) {
-      event.preventDefault();
-      event.stopPropagation();
+  const close = useCallback(
+    (event) => {
+      if (event.currentTarget.contains(event.relatedTarget)) return;
+      if (!multiple && isOpen) {
+        const exact = options.find((option) => option.toLowerCase() === query.trim().toLowerCase());
+        if (exact && exact !== value) onChange(exact);
+      }
       setIsOpen(false);
       setQuery('');
-    }
-  };
+    },
+    [isOpen, multiple, onChange, options, query, value],
+  );
+
+  const onKeyDown = useCallback(
+    (event) => {
+      if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+        event.preventDefault();
+        if (!isOpen) open();
+        else
+          setActiveIndex((index) =>
+            Math.max(
+              0,
+              Math.min(filtered.length - 1, index + (event.key === 'ArrowDown' ? 1 : -1)),
+            ),
+          );
+      } else if (event.key === 'Enter' && isOpen) {
+        event.preventDefault();
+        if (filtered.length) choose(filtered[currentIndex]);
+      } else if (event.key === 'Escape' && isOpen) {
+        event.preventDefault();
+        event.stopPropagation();
+        setIsOpen(false);
+        setQuery('');
+      }
+    },
+    [choose, currentIndex, filtered, isOpen, open],
+  );
 
   return (
     <div className="profile-field" onBlur={close}>
@@ -154,3 +176,5 @@ export default function SelectionField({
     </div>
   );
 }
+
+export default memo(SelectionField);

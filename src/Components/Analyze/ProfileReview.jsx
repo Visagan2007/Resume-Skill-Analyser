@@ -1,12 +1,23 @@
-import Icon from '../UI/Icon';
+import { memo, useMemo } from 'react';
+import Icon from '../UI/Icon.jsx';
 import { focusOptions } from './profileOptions.js';
 
-export default function ProfileReview({ profile, onEdit, titleRef }) {
+function ProfileReview({ profile, onEdit, titleRef }) {
   const groups = [
     { label: 'Technical skills', skills: profile.technicalSkills },
     { label: 'People skills', skills: profile.softSkills },
     { label: 'Certifications', skills: profile.certifications },
   ];
+
+  const focusSummary = useMemo(() => {
+    if (!profile.focusAreas.length) return 'No specific focus areas selected.';
+    const focusSet = new Set(profile.focusAreas);
+    return focusOptions
+      .filter((option) => focusSet.has(option.id))
+      .map((option) => option.label)
+      .join(' · ');
+  }, [profile.focusAreas]);
+
   return (
     <div className="profile-review">
       <div className="profile-review-mark">
@@ -70,14 +81,7 @@ export default function ProfileReview({ profile, onEdit, titleRef }) {
       ))}
       <section className="profile-review-group">
         <h3>What you want to focus on</h3>
-        <p>
-          {profile.focusAreas.length
-            ? focusOptions
-                .filter((option) => profile.focusAreas.includes(option.id))
-                .map((option) => option.label)
-                .join(' · ')
-            : 'No specific focus areas selected.'}
-        </p>
+        <p>{focusSummary}</p>
       </section>
       <p className="profile-review-notice" role="status">
         <Icon name="lock" />
@@ -92,3 +96,5 @@ export default function ProfileReview({ profile, onEdit, titleRef }) {
     </div>
   );
 }
+
+export default memo(ProfileReview);

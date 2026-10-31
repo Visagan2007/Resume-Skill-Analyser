@@ -1,10 +1,10 @@
+import { useCallback, useState } from 'react';
+import { Link } from 'react-router';
+import Icon from '../../UI/Icon.jsx';
+import { AuthFeedback, AuthField, AuthFormHeading, PasswordField } from '../AuthFields.jsx';
+import AuthJourney from '../AuthJourney.jsx';
 import './SignIn.css';
 import '../shared-auth.css';
-import { Link } from 'react-router';
-import { useState } from 'react';
-import Icon from '../../UI/Icon';
-import { AuthFeedback, AuthField, AuthFormHeading, PasswordField } from '../AuthFields';
-import AuthJourney from '../AuthJourney';
 
 const journeySteps = [
   { title: 'Where you are', description: 'Your professional background', icon: 'check' },
@@ -17,20 +17,25 @@ const journeySteps = [
   },
 ];
 
-function SignIn() {
+export default function SignIn() {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [feedback, setFeedback] = useState('');
 
-  const handleChange = (event) => {
+  const handleChange = useCallback((event) => {
     setFormData((previous) => ({ ...previous, [event.target.name]: event.target.value }));
     setFeedback('');
-  };
-  const handleSignIn = (event) => {
+  }, []);
+
+  const handleSignIn = useCallback((event) => {
     event.preventDefault();
     setFeedback(
       'Sign-in is not connected in this preview. You can explore the profile builder without an account.',
     );
-  };
+  }, []);
+
+  const handleForgotPassword = useCallback(() => {
+    setFeedback('Password reset is not connected in this preview. No reset email has been sent.');
+  }, []);
 
   return (
     <div className="auth-page auth-signin page-shell">
@@ -74,15 +79,7 @@ function SignIn() {
               autoComplete="current-password"
               required
               labelAction={
-                <button
-                  className="auth-text-button"
-                  type="button"
-                  onClick={() =>
-                    setFeedback(
-                      'Password reset is not connected in this preview. No reset email has been sent.',
-                    )
-                  }
-                >
+                <button className="auth-text-button" type="button" onClick={handleForgotPassword}>
                   Forgot password?
                 </button>
               }
@@ -113,4 +110,3 @@ function SignIn() {
     </div>
   );
 }
-export default SignIn;

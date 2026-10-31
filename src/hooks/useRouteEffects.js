@@ -13,7 +13,7 @@ export default function useRouteEffects(contentRef) {
     const firstVisit = previousPath.current === null;
     previousPath.current = location.pathname;
 
-    if (pathChanged) {
+    if (pathChanged && contentRef.current) {
       contentRef.current.dataset.clientNavigation = 'true';
       document.getElementById('main-content')?.focus({ preventScroll: true });
     }
@@ -30,6 +30,7 @@ export default function useRouteEffects(contentRef) {
 
     if (
       pathChanged &&
+      contentRef.current &&
       (!document.startViewTransition || navigationType === 'POP') &&
       !getVisualPreferences().reducedMotion
     ) {

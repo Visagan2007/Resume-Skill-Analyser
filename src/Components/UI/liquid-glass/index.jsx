@@ -1,11 +1,11 @@
-import { useEffect, useId, useRef } from 'react';
+import { memo, useEffect, useId, useRef } from 'react';
 import { createGlassController } from './controller.js';
 
 /**
  * Enhance existing semantic DOM with live glass optics derived from
  * dashersw/liquid-glass-js. Render once inside App; no component wrappers needed.
  */
-export function LiquidGlassEffects({ selector }) {
+function LiquidGlassEffectsComponent({ selector }) {
   const defsRef = useRef(null);
   const id = useId().replace(/[^a-zA-Z0-9-]/g, '');
 
@@ -29,3 +29,6 @@ export function LiquidGlassEffects({ selector }) {
     </svg>
   );
 }
+
+export const LiquidGlassEffects = memo(LiquidGlassEffectsComponent);
+export default LiquidGlassEffects;

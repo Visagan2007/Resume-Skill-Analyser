@@ -1,10 +1,11 @@
-import { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 
-export default function GlassScenery() {
+function GlassScenery() {
   const sceneryRef = useRef(null);
 
   useEffect(() => {
     const scenery = sceneryRef.current;
+    if (!scenery) return undefined;
     const syncVisibility = () => scenery.toggleAttribute('data-paused', document.hidden);
     syncVisibility();
     document.addEventListener('visibilitychange', syncVisibility);
@@ -19,3 +20,5 @@ export default function GlassScenery() {
     </div>
   );
 }
+
+export default memo(GlassScenery);

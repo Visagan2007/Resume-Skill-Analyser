@@ -1,10 +1,10 @@
+import { useCallback, useState } from 'react';
+import { Link } from 'react-router';
+import Icon from '../../UI/Icon.jsx';
+import { AuthFeedback, AuthField, AuthFormHeading, PasswordField } from '../AuthFields.jsx';
+import AuthJourney from '../AuthJourney.jsx';
 import './SignUp.css';
 import '../shared-auth.css';
-import { Link } from 'react-router';
-import { useState } from 'react';
-import Icon from '../../UI/Icon';
-import { AuthFeedback, AuthField, AuthFormHeading, PasswordField } from '../AuthFields';
-import AuthJourney from '../AuthJourney';
 
 const journeySteps = [
   { title: 'Your background', description: 'Experience, education, and domain', icon: 'file' },
@@ -17,15 +17,16 @@ const journeySteps = [
   },
 ];
 
-function SignUp() {
-  const [today] = useState(() => {
-    const now = new Date();
-    return [
-      now.getFullYear(),
-      String(now.getMonth() + 1).padStart(2, '0'),
-      String(now.getDate()).padStart(2, '0'),
-    ].join('-');
-  });
+const today = (() => {
+  const now = new Date();
+  return [
+    now.getFullYear(),
+    String(now.getMonth() + 1).padStart(2, '0'),
+    String(now.getDate()).padStart(2, '0'),
+  ].join('-');
+})();
+
+export default function SignUp() {
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -34,17 +35,19 @@ function SignUp() {
     agreedToPreview: false,
   });
   const [feedback, setFeedback] = useState('');
-  const handleChange = (event) => {
+
+  const handleChange = useCallback((event) => {
     const { name, value, type, checked } = event.target;
     setFormData((previous) => ({ ...previous, [name]: type === 'checkbox' ? checked : value }));
     setFeedback('');
-  };
-  const handleSignUp = (event) => {
+  }, []);
+
+  const handleSignUp = useCallback((event) => {
     event.preventDefault();
     setFeedback(
       'Account creation is not connected in this preview. Your details have not been sent or saved. You can try the profile builder without an account.',
     );
-  };
+  }, []);
 
   return (
     <div className="auth-page auth-signup page-shell">
@@ -147,4 +150,3 @@ function SignUp() {
     </div>
   );
 }
-export default SignUp;

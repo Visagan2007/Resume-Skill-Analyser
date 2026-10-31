@@ -1,5 +1,5 @@
-import { createOpticalMap, DISPLACEMENT_SCALE, measureSurface } from './optics';
-import { getVisualPreferences, subscribeVisualEffects } from '../../../visualEffects';
+import { createOpticalMap, DISPLACEMENT_SCALE, measureSurface } from './optics.js';
+import { getVisualPreferences, subscribeVisualEffects } from '../../../visualEffects.js';
 
 const SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
 const MAX_FILTERS = 48;

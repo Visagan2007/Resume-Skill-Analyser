@@ -1,6 +1,7 @@
+import { memo } from 'react';
 import { Link, NavLink } from 'react-router';
-import Icon from '../UI/Icon';
-import BrandSymbol from '../UI/BrandSymbol';
+import Icon from '../UI/Icon.jsx';
+import BrandSymbol from '../UI/BrandSymbol.jsx';
 import { scrollPageTo } from '../../smoothScroll.js';
 import './Footer.css';
 
@@ -11,7 +12,7 @@ function backToTop() {
   scrollPageTo(0);
 }
 
-export default function Footer() {
+function Footer() {
   return (
     <footer className="site-footer">
       <div className="footer-panel" data-liquid-glass>
@@ -104,3 +105,5 @@ export default function Footer() {
     </footer>
   );
 }
+
+export default memo(Footer);

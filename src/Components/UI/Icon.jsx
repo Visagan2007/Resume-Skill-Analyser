@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 const paths = {
   arrowRight: 'M4 12h16m-6-6 6 6-6 6',
   arrowUpRight: 'M6 18 18 6M6 6h12v12',
@@ -21,7 +23,7 @@ const paths = {
     'm9.5 3-.6 2.1-1.4.8-2.1-.5L3 9.6l1.5 1.6v1.6L3 14.4l2.4 4.2 2.1-.5 1.4.8.6 2.1h5l.6-2.1 1.4-.8 2.1.5 2.4-4.2-1.5-1.6v-1.6L21 9.6l-2.4-4.2-2.1.5-1.4-.8-.6-2.1Zm6 9a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0',
 };
 
-export default function Icon({ name = 'arrowUpRight', size = 20, className = '', ...props }) {
+function Icon({ name = 'arrowUpRight', size = 20, className = '', ...props }) {
   return (
     <svg
       width={size}
@@ -41,3 +43,5 @@ export default function Icon({ name = 'arrowUpRight', size = 20, className = '',
     </svg>
   );
 }
+
+export default memo(Icon);

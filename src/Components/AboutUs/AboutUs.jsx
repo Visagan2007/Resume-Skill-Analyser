@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import useScrollReveal from '../../hooks/useScrollReveal.js';
 import { Link } from 'react-router';
-import Icon from '../UI/Icon';
+import Icon from '../UI/Icon.jsx';
 import './AboutUs.css';
 
 const principles = [
@@ -19,7 +19,7 @@ const principles = [
   },
 ];
 
-function AboutUs() {
+export default function AboutUs() {
   const pageRef = useRef(null);
 
   useScrollReveal(pageRef, '[data-about-reveal]', 'about-in-view');
@@ -152,5 +152,3 @@ function AboutUs() {
     </div>
   );
 }
-
-export default AboutUs;

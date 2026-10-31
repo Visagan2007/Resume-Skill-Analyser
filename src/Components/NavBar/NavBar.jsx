@@ -1,7 +1,8 @@
+import { memo } from 'react';
 import { Link, NavLink } from 'react-router';
-import BrandSymbol from '../UI/BrandSymbol';
-import Icon from '../UI/Icon';
-import useNavigationMenu from './useNavigationMenu';
+import BrandSymbol from '../UI/BrandSymbol.jsx';
+import Icon from '../UI/Icon.jsx';
+import useNavigationMenu from './useNavigationMenu.js';
 import './NavBar.css';
 
 const navigationItems = [
@@ -10,7 +11,7 @@ const navigationItems = [
   { to: '/AboutUs', label: 'Our approach' },
 ];
 
-function Brand() {
+const Brand = memo(function Brand() {
   return (
     <span className="brand">
       <BrandSymbol className="brand-symbol" />
@@ -24,17 +25,17 @@ function Brand() {
       </span>
     </span>
   );
-}
+});
 
-function BrandLink({ onClick }) {
+const BrandLink = memo(function BrandLink({ onClick }) {
   return (
     <Link className="nav-brand" to="/" aria-label="Resume Skill Analyser home" onClick={onClick}>
       <Brand />
     </Link>
   );
-}
+});
 
-export default function NavBar() {
+function NavBar() {
   const {
     menuOpen,
     menuExpanded,
@@ -150,3 +151,5 @@ export default function NavBar() {
     </>
   );
 }
+
+export default memo(NavBar);

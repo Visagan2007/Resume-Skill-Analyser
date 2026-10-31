@@ -1,17 +1,17 @@
 import { BrowserRouter, Link, Route, Routes } from 'react-router';
 import { useRef, ViewTransition } from 'react';
 import './App.css';
-import Footer from './Components/Footer/Footer';
-import Home from './Components/Home/Home';
-import Analyze from './Components/Analyze/Analyze';
+import Footer from './Components/Footer/Footer.jsx';
+import Home from './Components/Home/Home.jsx';
+import Analyze from './Components/Analyze/Analyze.jsx';
 import { ProfileDraftProvider } from './Components/Analyze/ProfileDraftContext.jsx';
-import AboutUs from './Components/AboutUs/AboutUs';
-import SignIn from './Components/SignIn-SignUp/SignIn/SignIn';
-import SignUp from './Components/SignIn-SignUp/SignUp/SignUp';
-import NavBar from './Components/NavBar/NavBar';
-import NotFound from './Components/NotFound/NotFound';
-import Settings from './Components/Settings/Settings';
-import { LiquidGlassEffects } from './Components/UI/liquid-glass';
+import AboutUs from './Components/AboutUs/AboutUs.jsx';
+import SignIn from './Components/SignIn-SignUp/SignIn/SignIn.jsx';
+import SignUp from './Components/SignIn-SignUp/SignUp/SignUp.jsx';
+import NavBar from './Components/NavBar/NavBar.jsx';
+import NotFound from './Components/NotFound/NotFound.jsx';
+import Settings from './Components/Settings/Settings.jsx';
+import LiquidGlassEffects from './Components/UI/liquid-glass/index.jsx';
 import GlassScenery from './Components/UI/GlassScenery.jsx';
 import useRouteEffects from './hooks/useRouteEffects.js';
 import useSmoothScroll from './hooks/useSmoothScroll.js';
@@ -56,7 +56,7 @@ function AppLayout() {
   );
 }
 
-function App() {
+export default function App() {
   return (
     <BrowserRouter useTransitions>
       <ProfileDraftProvider>
@@ -65,5 +65,3 @@ function App() {
     </BrowserRouter>
   );
 }
-
-export default App;

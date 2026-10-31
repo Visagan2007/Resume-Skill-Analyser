@@ -25,17 +25,25 @@ export function createProfile() {
   };
 }
 
+const domainSet = new Set(domains);
+const jobRoleSet = new Set(jobRoles);
+const experienceBandSet = new Set(experienceBands);
+const educationLevelSet = new Set(educationLevels);
+const fieldOfStudySet = new Set(fieldsOfStudy);
+const workModeSet = new Set(workModes);
+const noticePeriodSet = new Set(noticePeriods);
+
 export function getStageValidity(profile) {
   return [
-    domains.includes(profile.domain) &&
-      jobRoles.includes(profile.currentTitle) &&
-      experienceBands.includes(profile.experience) &&
-      educationLevels.includes(profile.education) &&
-      fieldsOfStudy.includes(profile.fieldOfStudy),
+    domainSet.has(profile.domain) &&
+      jobRoleSet.has(profile.currentTitle) &&
+      experienceBandSet.has(profile.experience) &&
+      educationLevelSet.has(profile.education) &&
+      fieldOfStudySet.has(profile.fieldOfStudy),
     profile.technicalSkills.length > 0 || profile.softSkills.length > 0,
-    jobRoles.includes(profile.targetTitle) &&
-      workModes.includes(profile.workMode) &&
-      noticePeriods.includes(profile.noticePeriod),
+    jobRoleSet.has(profile.targetTitle) &&
+      workModeSet.has(profile.workMode) &&
+      noticePeriodSet.has(profile.noticePeriod),
   ];
 }
 

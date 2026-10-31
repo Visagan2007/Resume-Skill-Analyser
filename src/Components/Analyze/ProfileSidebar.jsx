@@ -1,7 +1,8 @@
-import Icon from '../UI/Icon';
+import { memo } from 'react';
+import Icon from '../UI/Icon.jsx';
 import { profileStages } from './profileOptions.js';
 
-export default function ProfileSidebar({ step, reviewing, profile, onEdit }) {
+function ProfileSidebar({ step, reviewing, profile, onEdit }) {
   const skillCount = profile.technicalSkills.length + profile.softSkills.length;
 
   return (
@@ -64,3 +65,5 @@ export default function ProfileSidebar({ step, reviewing, profile, onEdit }) {
     </aside>
   );
 }
+
+export default memo(ProfileSidebar);

@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { transitionAppearance } from './appearanceTransition.js';
 import { getVisualPreferences } from './visualEffects.js';
 
@@ -14,13 +14,15 @@ function storedPreference() {
 }
 
 export default function useTheme() {
-  const [theme, setTheme] = useState(() =>
-    document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light',
-  );
+  const [theme, setTheme] = useState(() => {
+    if (typeof document === 'undefined') return 'light';
+    return document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+  });
   const preferenceRef = useRef(storedPreference());
   const selectedThemeRef = useRef(theme);
 
   useLayoutEffect(() => {
+    if (typeof document === 'undefined') return;
     const root = document.documentElement;
     root.dataset.theme = theme;
     root.style.colorScheme = theme;
@@ -30,6 +32,7 @@ export default function useTheme() {
   }, [theme]);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
     const system = window.matchMedia('(prefers-color-scheme: dark)');
     const onSystemChange = (event) => {
       if (!preferenceRef.current) {
@@ -53,7 +56,7 @@ export default function useTheme() {
     };
   }, []);
 
-  const selectTheme = (next) => {
+  const selectTheme = useCallback((next) => {
     if (next !== 'light' && next !== 'dark') return;
     if (next === selectedThemeRef.current && preferenceRef.current === next) return;
     selectedThemeRef.current = next;
@@ -66,7 +69,7 @@ export default function useTheme() {
     transitionAppearance(() => setTheme(next), {
       reducedMotion: getVisualPreferences().reducedMotion,
     });
-  };
+  }, []);
 
   return { theme, setTheme: selectTheme };
 }

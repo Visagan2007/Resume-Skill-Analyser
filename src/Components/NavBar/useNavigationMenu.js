@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { getVisualPreferences } from '../../visualEffects';
+import { getVisualPreferences } from '../../visualEffects.js';
 import { setPageScrollLocked } from '../../smoothScroll.js';
 
 export default function useNavigationMenu() {
@@ -60,52 +60,64 @@ export default function useNavigationMenu() {
     return () => query.removeEventListener('change', onChange);
   }, [finishClose]);
 
-  const openMenu = () => {
+  const openMenu = useCallback(() => {
     returnFocusRef.current = 'trigger';
     setMenuOpen(true);
-  };
+  }, []);
 
-  const closeMenu = (returnFocus = 'trigger') => {
-    if (closingTimerRef.current || !dialogRef.current?.open) return;
-    returnFocusRef.current = returnFocus;
-    cancelAnimationFrame(openingFrameRef.current);
-    setMenuExpanded(false);
-    if (!menuExpanded || getVisualPreferences().reducedMotion) finishClose();
-    else closingTimerRef.current = window.setTimeout(finishClose, 360);
-  };
+  const closeMenu = useCallback(
+    (returnFocus = 'trigger') => {
+      if (closingTimerRef.current || !dialogRef.current?.open) return;
+      returnFocusRef.current = returnFocus;
+      cancelAnimationFrame(openingFrameRef.current);
+      setMenuExpanded(false);
+      if (!menuExpanded || getVisualPreferences().reducedMotion) finishClose();
+      else closingTimerRef.current = window.setTimeout(finishClose, 360);
+    },
+    [finishClose, menuExpanded],
+  );
 
-  const onCancel = (event) => {
-    event.preventDefault();
-    closeMenu();
-  };
+  const onCancel = useCallback(
+    (event) => {
+      event.preventDefault();
+      closeMenu();
+    },
+    [closeMenu],
+  );
 
-  const onClose = (event) => {
+  const onClose = useCallback((event) => {
     if (!event.currentTarget.open) {
       setMenuOpen(false);
       setMenuExpanded(false);
     }
-  };
+  }, []);
 
-  const onTransitionEnd = (event) => {
-    if (
-      event.target === event.currentTarget &&
-      event.propertyName === 'grid-template-rows' &&
-      !menuExpanded
-    )
-      finishClose();
-  };
+  const onTransitionEnd = useCallback(
+    (event) => {
+      if (
+        event.target === event.currentTarget &&
+        event.propertyName === 'grid-template-rows' &&
+        !menuExpanded
+      )
+        finishClose();
+    },
+    [finishClose, menuExpanded],
+  );
 
-  const onBackdropClick = (event) => {
-    if (event.target !== event.currentTarget) return;
-    const rect = event.currentTarget.getBoundingClientRect();
-    if (
-      event.clientX < rect.left ||
-      event.clientX > rect.right ||
-      event.clientY < rect.top ||
-      event.clientY > rect.bottom
-    )
-      closeMenu();
-  };
+  const onBackdropClick = useCallback(
+    (event) => {
+      if (event.target !== event.currentTarget) return;
+      const rect = event.currentTarget.getBoundingClientRect();
+      if (
+        event.clientX < rect.left ||
+        event.clientX > rect.right ||
+        event.clientY < rect.top ||
+        event.clientY > rect.bottom
+      )
+        closeMenu();
+    },
+    [closeMenu],
+  );
 
   return {
     menuOpen,

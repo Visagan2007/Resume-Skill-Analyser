@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import Icon from '../UI/Icon';
+import { memo, useState } from 'react';
+import Icon from '../UI/Icon.jsx';
 
-function FieldLayout({ id, label, labelAction, help, children }) {
+const FieldLayout = memo(function FieldLayout({ id, label, labelAction, help, children }) {
   const fieldLabel = <label htmlFor={id}>{label}</label>;
 
   return (
@@ -22,7 +22,7 @@ function FieldLayout({ id, label, labelAction, help, children }) {
       )}
     </div>
   );
-}
+});
 
 export function AuthField({ id, label, ...inputProps }) {
   return (
@@ -60,7 +60,7 @@ export function PasswordField({ id, labelAction, help, ...inputProps }) {
   );
 }
 
-export function AuthFormHeading({ title, description }) {
+export const AuthFormHeading = memo(function AuthFormHeading({ title, description }) {
   return (
     <div className="auth-form-heading">
       <span className="auth-small-mark" aria-hidden="true">
@@ -70,9 +70,9 @@ export function AuthFormHeading({ title, description }) {
       <p>{description}</p>
     </div>
   );
-}
+});
 
-export function AuthFeedback({ children }) {
+export const AuthFeedback = memo(function AuthFeedback({ children }) {
   if (!children) return null;
   return (
     <div className="auth-feedback" role="status">
@@ -80,4 +80,4 @@ export function AuthFeedback({ children }) {
       <p>{children}</p>
     </div>
   );
-}
+});

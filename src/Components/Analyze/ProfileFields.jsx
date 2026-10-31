@@ -1,12 +1,15 @@
-import Icon from '../UI/Icon';
-import SelectionField from './SelectionField';
+import { memo } from 'react';
+import Icon from '../UI/Icon.jsx';
+import SelectionField from './SelectionField.jsx';
 import { focusOptions, stageFields } from './profileOptions.js';
 
-export default function ProfileFields({ step, profile, onChange, onToggleFocus }) {
+function ProfileFields({ step, profile, onChange, onToggleFocus }) {
+  const currentStageFields = stageFields[step - 1] || [];
+
   return (
     <>
       <div className={step === 2 ? 'profile-skills-fields' : 'profile-field-grid'}>
-        {stageFields[step - 1].map((field) => {
+        {currentStageFields.map((field) => {
           const input = (
             <SelectionField
               key={field.name}
@@ -60,3 +63,5 @@ export default function ProfileFields({ step, profile, onChange, onToggleFocus }
     </>
   );
 }
+
+export default memo(ProfileFields);

@@ -1,4 +1,6 @@
-export default function BrandSymbol(props) {
+import { memo } from 'react';
+
+function BrandSymbol(props) {
   return (
     <svg
       viewBox="0 0 30 32"
@@ -15,3 +17,5 @@ export default function BrandSymbol(props) {
     </svg>
   );
 }
+
+export default memo(BrandSymbol);
